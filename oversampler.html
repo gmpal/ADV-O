@@ -1,0 +1,573 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="author" title="About these documents" href="about.html" /><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Utils" href="utils.html" /><link rel="prev" title="Generator" href="generator.html" />
+
+    <!-- Generated with Sphinx 6.1.3 and Furo 2022.12.07 -->
+        <title>Oversampler - ADVO documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">ADVO  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/advo2.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">ADVO  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Documentation</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="generator.html">Generator</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">Oversampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="oversampler">
+<h1>Oversampler<a class="headerlink" href="#oversampler" title="Permalink to this heading">#</a></h1>
+<section id="module-oversampler.advo">
+<span id="oversampler-advo-module"></span><h2>oversampler.advo module<a class="headerlink" href="#module-oversampler.advo" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">oversampler.advo.</span></span><span class="sig-name descname"><span class="pre">ADVO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">transactions_df=None,</span> <span class="pre">n_jobs=1,</span> <span class="pre">training_frac=0.8,</span> <span class="pre">sampling_strategy=0.5,</span> <span class="pre">random_state=1,</span> <span class="pre">verbose=False,</span> <span class="pre">searcher:</span> <span class="pre">~typing.Type[~sklearn.model_selection._split.BaseCrossValidator]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'sklearn.model_selection._search.RandomizedSearchCV'&gt;,</span> <span class="pre">candidate_regressors=None,</span> <span class="pre">search_parameters:</span> <span class="pre">~typing.Dict[str,</span> <span class="pre">~typing.Any]</span> <span class="pre">=</span> <span class="pre">{'alpha':</span> <span class="pre">[0.1,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">5,</span> <span class="pre">10],</span> <span class="pre">'fit_intercept':</span> <span class="pre">[True,</span> <span class="pre">False]},</span> <span class="pre">regressor:</span> <span class="pre">~typing.Type[~sklearn.base.BaseEstimator]</span> <span class="pre">=</span> <span class="pre">Ridge()</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>ADVO: An Adversary model of fraudsters behaviour to improve oversampling in credit card fraud detection.</p>
+<p>This class implements an adversarial model of fraudsters’ behavior that can be used to improve oversampling in credit
+card fraud detection. The model uses transactions data to create pairs of fraudulent transactions for each customer, and
+trains regression models to predict future fraudulent transactions for each customer.</p>
+<p>The class provides methods for generating transactions data, loading transactions from a file, creating pairs of
+fraudulent transactions, tuning the hyperparameters of regression models, fitting the regression models to data, and
+generating new synthetic transactions using the trained models.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.transactions_df">
+<span class="sig-name descname"><span class="pre">transactions_df</span></span><a class="headerlink" href="#oversampler.advo.ADVO.transactions_df" title="Permalink to this definition">#</a></dt>
+<dd><p>a dataframe containing the transactions data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.n_jobs">
+<span class="sig-name descname"><span class="pre">n_jobs</span></span><a class="headerlink" href="#oversampler.advo.ADVO.n_jobs" title="Permalink to this definition">#</a></dt>
+<dd><p>the number of cores to use when running certain methods in parallel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.random_state">
+<span class="sig-name descname"><span class="pre">random_state</span></span><a class="headerlink" href="#oversampler.advo.ADVO.random_state" title="Permalink to this definition">#</a></dt>
+<dd><p>the random seed to use when generating transactions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#oversampler.advo.ADVO.verbose" title="Permalink to this definition">#</a></dt>
+<dd><p>whether to print progress bars when running certain methods in parallel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.training_frac">
+<span class="sig-name descname"><span class="pre">training_frac</span></span><a class="headerlink" href="#oversampler.advo.ADVO.training_frac" title="Permalink to this definition">#</a></dt>
+<dd><p>the fraction of transactions to use for training the regression models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.sampling_strategy">
+<span class="sig-name descname"><span class="pre">sampling_strategy</span></span><a class="headerlink" href="#oversampler.advo.ADVO.sampling_strategy" title="Permalink to this definition">#</a></dt>
+<dd><p>the fraction of fraudulent transactions to achieve when oversampling.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.useful_features">
+<span class="sig-name descname"><span class="pre">useful_features</span></span><a class="headerlink" href="#oversampler.advo.ADVO.useful_features" title="Permalink to this definition">#</a></dt>
+<dd><p>a list of the names of the features to use when training the regression models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.regressors">
+<span class="sig-name descname"><span class="pre">regressors</span></span><a class="headerlink" href="#oversampler.advo.ADVO.regressors" title="Permalink to this definition">#</a></dt>
+<dd><p>a dictionary containing the trained regression models, with the features to predict as
+keys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.searcher">
+<span class="sig-name descname"><span class="pre">searcher</span></span><a class="headerlink" href="#oversampler.advo.ADVO.searcher" title="Permalink to this definition">#</a></dt>
+<dd><p>the search cross-validation object to use for hyperparameter tuning.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Type[BaseSearchCV]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.search_parameters">
+<span class="sig-name descname"><span class="pre">search_parameters</span></span><a class="headerlink" href="#oversampler.advo.ADVO.search_parameters" title="Permalink to this definition">#</a></dt>
+<dd><p>a dictionary containing the parameters to use when tuning the regression models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.regressor">
+<span class="sig-name descname"><span class="pre">regressor</span></span><a class="headerlink" href="#oversampler.advo.ADVO.regressor" title="Permalink to this definition">#</a></dt>
+<dd><p>the regressor object to use for training the regression models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Type[BaseEstimator]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.create_couples">
+<span class="sig-name descname"><span class="pre">create_couples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.create_couples"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.create_couples" title="Permalink to this definition">#</a></dt>
+<dd><p>Create couples of fraudulent transactions for each customer.</p>
+<p>This method uses the <cite>transactions_df</cite> and <cite>terminal_profiles_table</cite> attributes of the <cite>generator</cite> attribute to create
+a table of fraudulent transactions. It then groups the transactions by customer, and applies the <cite>_make_couples</cite> method
+to each group in order to create couples of fraudulent transactions for each customer. The results are stored in the
+<cite>couples</cite> attribute of the current instance.</p>
+<p>This method can run in parallel using multiple cores if the <cite>n_jobs</cite> attribute is set to a value greater than 1.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.fit_regressors">
+<span class="sig-name descname"><span class="pre">fit_regressors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.fit_regressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.fit_regressors" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.fit_resample">
+<span class="sig-name descname"><span class="pre">fit_resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.fit_resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.fit_resample" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.generate_transactions">
+<span class="sig-name descname"><span class="pre">generate_transactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_customers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_terminals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.generate_transactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.generate_transactions" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate transactions after creating a Generator instance.</p>
+<p>This method generates transactions after creating a <cite>Generator</cite> instance to hold the data. The
+<cite>Generator</cite> instance is stored in the <cite>generator</cite> attribute of the current instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_customers</strong> (<em>int</em>) – the number of customers to generate.</p></li>
+<li><p><strong>n_terminals</strong> (<em>int</em>) – the number of terminals to generate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.insert_synthetic_frauds">
+<span class="sig-name descname"><span class="pre">insert_synthetic_frauds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transactions_df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.insert_synthetic_frauds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.insert_synthetic_frauds" title="Permalink to this definition">#</a></dt>
+<dd><p>Adds multiple layers of predicted fraudulent transactions to a dataframe of transactions until a specified percentage of fraud is reached.</p>
+<p>This method filters the input dataframe to only include rows with a value of 1 in the ‘TX_FRAUD’ column,
+and groups the remaining rows by the values in the ‘CUSTOMER_ID’ column. It then applies the ‘_oversample_df’
+method to each group of transactions, adding the predicted fraudulent transactions to the original dataframe.
+This process is repeated until the specified percentage of fraud is reached. The resulting dataframe is then
+sampled to ensure that the exact percentage of fraud is maintained.</p>
+<p>Args:
+transactions_df: A pandas DataFrame containing transaction data.
+percentage: A float specifying the target percentage of fraud in the resulting dataframe.</p>
+<p>Returns:
+A new pandas DataFrame with the original transaction data and the added layers of predicted fraudulent transactions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.load_trasactions">
+<span class="sig-name descname"><span class="pre">load_trasactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.load_trasactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.load_trasactions" title="Permalink to this definition">#</a></dt>
+<dd><p>Load transactions from a file.</p>
+<p>This method loads transactions from a file. The file can be either a csv or a pickle file. The loaded transactions
+are stored in the <cite>transactions_df</cite> attribute of the current instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – the name of the file to load the transactions from.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.select_best_regressor">
+<span class="sig-name descname"><span class="pre">select_best_regressor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">candidate_regressors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_set</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.select_best_regressor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.select_best_regressor" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.set_transactions">
+<span class="sig-name descname"><span class="pre">set_transactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X_train</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_train</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.set_transactions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.set_transactions" title="Permalink to this definition">#</a></dt>
+<dd><p>Standard setter method for the attribute transactions_df.</p>
+<p>This method takes as input a set of transactions features and labels, merges them, and stores them in the attribute transactions_df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>X_train</strong> (<em>pd.DataFrame</em>) – a DataFrame containing the features of the transactions.</p></li>
+<li><p><strong>y_train</strong> (<em>pd.Series</em>) – a Series containing the labels of the transactions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.tune_best_regressors">
+<span class="sig-name descname"><span class="pre">tune_best_regressors</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.tune_best_regressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.tune_best_regressors" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.advo.ADVO.tune_regressors">
+<span class="sig-name descname"><span class="pre">tune_regressors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">metric:</span> <span class="pre">~typing.Callable[[~numpy.ndarray,</span> <span class="pre">~numpy.ndarray],</span> <span class="pre">float]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">r2_score&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/oversampler/advo.html#ADVO.tune_regressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.advo.ADVO.tune_regressors" title="Permalink to this definition">#</a></dt>
+<dd><p>Tunes the hyperparameters of one regressor per feature specified in the self.useful_features attribute.
+All regressors belong to the same family specified by the ‘self.regressor’ parameter.
+The set of hyperparameter-tuned regressors is stored in the self.regressors attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metric</strong> – the evaluation metric for the score of the regressors</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-oversampler.ctgan_wrapper">
+<span id="oversampler-ctgan-wrapper-module"></span><h2>oversampler.ctgan_wrapper module<a class="headerlink" href="#module-oversampler.ctgan_wrapper" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="oversampler.ctgan_wrapper.CTGANOverSampler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">oversampler.ctgan_wrapper.</span></span><span class="sig-name descname"><span class="pre">CTGANOverSampler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sampling_strategy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/ctgan_wrapper.html#CTGANOverSampler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.ctgan_wrapper.CTGANOverSampler" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="oversampler.ctgan_wrapper.CTGANOverSampler.fit_resample">
+<span class="sig-name descname"><span class="pre">fit_resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_Y</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/oversampler/ctgan_wrapper.html#CTGANOverSampler.fit_resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#oversampler.ctgan_wrapper.CTGANOverSampler.fit_resample" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="utils.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Utils</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="generator.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Generator</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2022, Daniele Lunghi, Gian Marco Paldino
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Oversampler</a><ul>
+<li><a class="reference internal" href="#module-oversampler.advo">oversampler.advo module</a><ul>
+<li><a class="reference internal" href="#oversampler.advo.ADVO"><code class="docutils literal notranslate"><span class="pre">ADVO</span></code></a><ul>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.transactions_df"><code class="docutils literal notranslate"><span class="pre">ADVO.transactions_df</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.n_jobs"><code class="docutils literal notranslate"><span class="pre">ADVO.n_jobs</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.random_state"><code class="docutils literal notranslate"><span class="pre">ADVO.random_state</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.verbose"><code class="docutils literal notranslate"><span class="pre">ADVO.verbose</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.training_frac"><code class="docutils literal notranslate"><span class="pre">ADVO.training_frac</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.sampling_strategy"><code class="docutils literal notranslate"><span class="pre">ADVO.sampling_strategy</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.useful_features"><code class="docutils literal notranslate"><span class="pre">ADVO.useful_features</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.regressors"><code class="docutils literal notranslate"><span class="pre">ADVO.regressors</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.searcher"><code class="docutils literal notranslate"><span class="pre">ADVO.searcher</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.search_parameters"><code class="docutils literal notranslate"><span class="pre">ADVO.search_parameters</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.regressor"><code class="docutils literal notranslate"><span class="pre">ADVO.regressor</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.create_couples"><code class="docutils literal notranslate"><span class="pre">ADVO.create_couples()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.fit_regressors"><code class="docutils literal notranslate"><span class="pre">ADVO.fit_regressors()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.fit_resample"><code class="docutils literal notranslate"><span class="pre">ADVO.fit_resample()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.generate_transactions"><code class="docutils literal notranslate"><span class="pre">ADVO.generate_transactions()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.insert_synthetic_frauds"><code class="docutils literal notranslate"><span class="pre">ADVO.insert_synthetic_frauds()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.load_trasactions"><code class="docutils literal notranslate"><span class="pre">ADVO.load_trasactions()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.select_best_regressor"><code class="docutils literal notranslate"><span class="pre">ADVO.select_best_regressor()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.set_transactions"><code class="docutils literal notranslate"><span class="pre">ADVO.set_transactions()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.tune_best_regressors"><code class="docutils literal notranslate"><span class="pre">ADVO.tune_best_regressors()</span></code></a></li>
+<li><a class="reference internal" href="#oversampler.advo.ADVO.tune_regressors"><code class="docutils literal notranslate"><span class="pre">ADVO.tune_regressors()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-oversampler.ctgan_wrapper">oversampler.ctgan_wrapper module</a><ul>
+<li><a class="reference internal" href="#oversampler.ctgan_wrapper.CTGANOverSampler"><code class="docutils literal notranslate"><span class="pre">CTGANOverSampler</span></code></a><ul>
+<li><a class="reference internal" href="#oversampler.ctgan_wrapper.CTGANOverSampler.fit_resample"><code class="docutils literal notranslate"><span class="pre">CTGANOverSampler.fit_resample()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    </body>
+</html>
